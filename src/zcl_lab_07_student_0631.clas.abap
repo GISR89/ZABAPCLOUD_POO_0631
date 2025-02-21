@@ -1,0 +1,23 @@
+CLASS zcl_lab_07_student_0631 DEFINITION
+  PUBLIC
+  FINAL
+  CREATE PUBLIC .
+
+  PUBLIC SECTION.
+
+    DATA birth_date TYPE d READ-ONLY.
+
+    METHODS set_birth_date .
+
+PROTECTED SECTION.
+  PRIVATE SECTION.
+ENDCLASS.
+
+CLASS zcl_lab_07_student_0631 IMPLEMENTATION.
+  METHOD set_birth_date.
+
+birth_date = '20251213'.
+
+  ENDMETHOD.
+
+ENDCLASS.
