@@ -22,20 +22,116 @@ CLASS zcl_lab_01_ejec_0631 IMPLEMENTATION.
 
   METHOD if_oo_adt_classrun~main.
 
+*     "Polimorfismo, asociación y composición
 
+    "7. Asignar instancias a la clase genérica Object
 
+    DATA : go_object       TYPE REF TO object,
+           gv_method_name  TYPE string,
+           gv_headquarters TYPE string,
+           gv_valor_final  TYPE string.
 
+    go_object = NEW zcl_lab_41_organization_0631( ).
 
-    "Interfaces y Clases Abstractas
+    gv_method_name = 'SET_HEADQUARTERS'.
 
-    "6. Clase abstracta
+    gv_headquarters = 'test headquarters'.
 
-    DATA(lo_logistics) = NEW zcl_lab_28_logistics_0631( ).
+    CALL METHOD go_object->(gv_method_name) EXPORTING iv_headquarters = gv_headquarters.
 
-    out->write( lo_logistics->input_products( ) ).
-    out->write( lo_logistics->prodution_line( ) ).
-    out->write( lo_logistics->merchandise_output(  ) ).
+    gv_method_name = 'GET_HEADQUARTERS'.
 
+    CALL METHOD go_object->(gv_method_name) RECEIVING rv_headquarters = gv_valor_final.
+
+    out->write( gv_valor_final ).
+
+*    "6. Crear instancias de tipos distintos
+*
+*    DATA go_budget TYPE REF TO zcl_lab_39_budget_0631.
+*
+*    go_budget = NEW zcl_lab_40_actual_budget_0631( ).
+*
+*    out->write( go_budget->get_budget(  ) ).
+*
+*    "5. Múltiples referencias apuntando al mismo objeto
+*
+*    DATA : lo_price_1 TYPE REF TO zcl_lab_38_prod_price_0631,
+*           lo_price_2 TYPE REF TO zcl_lab_38_prod_price_0631.
+*
+*    lo_price_1 = NEW #( ).
+*    lo_price_2 = lo_price_1.
+*
+*    lo_price_2->price = '12345'.
+*
+*    out->write( lo_price_1->price ).
+*    out->write( lo_price_2->price ).
+*
+*    "4. Composición
+*
+*    DATA(lo_screen) = NEW zcl_lab_37_screen_0631( ).
+*    DATA(lo_phone) = NEW zcl_lab_36_phone_0631( lo_screen ).
+*
+*    lo_screen->set_screen_type( 'LCD' ).
+*
+*    out->write( lo_phone->get_phone( )->get__screen_type( ) ) .
+*
+*     "3. Asociación
+*
+*    DATA(lo_student) = NEW zcl_lab_34_student_0631( ).
+*    DATA(lo_college) = NEW zcl_lab_35_college_0631( ).
+*
+*    lo_student->set_name( 'Maria' ).
+*
+*    lo_college->enroll_student( lo_student ).
+*    out->write( lo_college->get_enroll_student( )->get_name( ) ).
+*
+*    " 2. Polimorfismo con interfaces
+*
+*    DATA: gt_employee        TYPE STANDARD TABLE OF REF TO zif_lab_04_employee_0631,
+*          go_employee        TYPE REF TO zif_lab_04_employee_0631,
+*          go_internal_empl   TYPE REF TO zcl_lab_32_internal_empl_0631,
+*          go_expatriate_empl TYPE REF TO zcl_lab_33_expatriate_emp_0631.
+*
+*    go_internal_empl = NEW #( ).
+*    APPEND go_internal_empl TO gt_employee.
+*
+*    go_expatriate_empl = NEW #( ).
+*    APPEND go_expatriate_empl TO gt_employee.
+*
+*    LOOP AT gt_employee INTO go_employee.
+*      out->write( go_employee->get_employees_count( ) ).
+*    ENDLOOP.
+*
+*    "1. Polimorfismo con clases
+*
+*    DATA : gt_organization TYPE STANDARD TABLE OF REF TO zcl_lab_29_organization_0631,
+*           go_organization TYPE REF TO zcl_lab_29_organization_0631,
+*           go_org_germany  TYPE REF TO zcl_lab_30_org_germany_0631,
+*           go_org_france   TYPE REF TO zcl_lab_31_org_france_0631.
+*
+*    go_org_germany = NEW #( ).
+*    APPEND go_org_germany TO gt_organization.
+*
+*    go_org_france = NEW #( ).
+*    APPEND go_org_france TO gt_organization.
+*
+*    LOOP AT gt_organization INTO go_organization.
+*      out->write( go_organization->get_location( ) ).
+*    ENDLOOP.
+*
+*   "Polimorfismo, asociación y composición
+*
+**********************************************************************
+*    "Interfaces y Clases Abstractas
+*
+*    "6. Clase abstracta
+*
+*    DATA(lo_logistics) = NEW zcl_lab_28_logistics_0631( ).
+*
+*    out->write( lo_logistics->input_products( ) ).
+*    out->write( lo_logistics->prodution_line( ) ).
+*    out->write( lo_logistics->merchandise_output(  ) ).
+*
 *    "4. Interfaces anidadas
 *
 *    DATA(lo_airport) = NEW zcl_lab_26_flights_0631( ).
