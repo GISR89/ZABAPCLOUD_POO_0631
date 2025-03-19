@@ -22,29 +22,97 @@ CLASS zcl_lab_01_ejec_0631 IMPLEMENTATION.
 
   METHOD if_oo_adt_classrun~main.
 
+
+*   "Eventos en orientación a objetos
+*
+*     "8. ALL INSTANCE
+*
+*    DATA(lo_administ_dep)  = NEW zcl_lab_48_administ_dep_0631( 'Empleado 1' ).
+*    DATA(lo_administ_dep2) = NEW zcl_lab_48_administ_dep_0631( 'Empleado 2' ).
+*    DATA(lo_administ_dep3) = NEW zcl_lab_48_administ_dep_0631( 'Empleado 3' ).
+*
+*    DATA(lo_employee) = NEW zcl_lab_49_employee_0631( ).
+*
+*    SET HANDLER lo_employee->on_payroll_paid FOR ALL INSTANCES.
+*
+*    lo_administ_dep->notify_employee( ).
+*    out->write( lo_employee->log ).
+*
+*    lo_administ_dep2->notify_employee( ).
+*    out->write( lo_employee->log ).
+*
+*    lo_administ_dep3->notify_employee( ).
+*    out->write( lo_employee->log ).
+*
+*
+*    "7. Eventos estáticos
+*
+*    SET HANDLER zcl_lab_47_customer_serv_0631=>on_new_call.
+*    zcl_lab_46_mobile_operator_631=>assign_call( ).
+*
+*    out->write( zcl_lab_47_customer_serv_0631=>log ).
+*
+*    "6. Desactivar objeto manejador
+*
+*    DATA(lo_operanding_syst) = NEW zcl_lab_44_operating_syst_0631( ).
+*    DATA(lo_chrome) = NEW zcl_lab_45_chrome_0631( ).
+
+*
+*    SET HANDLER lo_chrome->on_close_window FOR lo_operanding_syst ACTIVATION abap_false.
+*
+*    lo_operanding_syst->mouse_movement( ).
+*
+*    out->write( |{ lo_operanding_syst->mouse_movement( ) } - { lo_chrome->log }| ).
+*
+*    "5. Definir eventos en las interfaces
+*
+*    DATA(lo_operanding_syst) = NEW zcl_lab_44_operating_syst_0631( ).
+*    DATA(lo_chrome) = NEW zcl_lab_45_chrome_0631( ).
+*
+*    SET HANDLER lo_chrome->on_close_window FOR lo_operanding_syst.
+*
+*    lo_operanding_syst->mouse_movement( ).
+*
+*    out->write( |{ lo_operanding_syst->mouse_movement( ) } - { lo_chrome->log }| ).
+*
+*    "3. Establecer referencia manejadora – EVENT HANDLER
+*
+*    DATA(lo_screen) = NEW zcl_lab_42_screen_0631( 'LED' ).
+*    DATA(lo_navigation) = NEW zcl_lab_43_navigation_0631( ).
+*
+*    SET HANDLER lo_navigation->on_touch_screen FOR lo_screen.
+*
+*    lo_screen->element_select( ).
+*
+*    out->write( lo_navigation->log ).
+**
+*   "Eventos en orientación a objetos
+*
+**********************************************************************
+*
 *     "Polimorfismo, asociación y composición
-
-    "7. Asignar instancias a la clase genérica Object
-
-    DATA : go_object       TYPE REF TO object,
-           gv_method_name  TYPE string,
-           gv_headquarters TYPE string,
-           gv_valor_final  TYPE string.
-
-    go_object = NEW zcl_lab_41_organization_0631( ).
-
-    gv_method_name = 'SET_HEADQUARTERS'.
-
-    gv_headquarters = 'test headquarters'.
-
-    CALL METHOD go_object->(gv_method_name) EXPORTING iv_headquarters = gv_headquarters.
-
-    gv_method_name = 'GET_HEADQUARTERS'.
-
-    CALL METHOD go_object->(gv_method_name) RECEIVING rv_headquarters = gv_valor_final.
-
-    out->write( gv_valor_final ).
-
+*
+*    "7. Asignar instancias a la clase genérica Object
+*
+*    DATA : go_object       TYPE REF TO object,
+*           gv_method_name  TYPE string,
+*           gv_headquarters TYPE string,
+*           gv_valor_final  TYPE string.
+*
+*    go_object = NEW zcl_lab_41_organization_0631( ).
+*
+*    gv_method_name = 'SET_HEADQUARTERS'.
+*
+*    gv_headquarters = 'test headquarters'.
+*
+*    CALL METHOD go_object->(gv_method_name) EXPORTING iv_headquarters = gv_headquarters.
+*
+*    gv_method_name = 'GET_HEADQUARTERS'.
+*
+*    CALL METHOD go_object->(gv_method_name) RECEIVING rv_headquarters = gv_valor_final.
+*
+*    out->write( gv_valor_final ).
+*
 *    "6. Crear instancias de tipos distintos
 *
 *    DATA go_budget TYPE REF TO zcl_lab_39_budget_0631.
