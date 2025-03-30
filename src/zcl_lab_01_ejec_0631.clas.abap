@@ -23,6 +23,222 @@ CLASS zcl_lab_01_ejec_0631 IMPLEMENTATION.
   METHOD if_oo_adt_classrun~main.
 
 
+
+*    "Patrones de diseño
+*    "5. Patrón de diseño MODEL-VIEW-CONTROLLER
+*
+*    DATA(lo_model) = NEW zcl_lab_73_model_0631(  ).
+*    DATA(lo_view) = NEW zcl_lab_74_view_0631(  ).
+*    DATA(lo_controller) = NEW zcl_lab_75_controller_0631(  ).
+*
+*    lo_controller->set_model( lo_model ).
+*    lo_controller->get_model( )->set_flight_model( 'SQ' ).
+*    lo_controller->set_view( lo_view ).
+*
+*    lo_controller->get_view(  )->renderer_flights( it_flights = lo_controller->get_model(  )->get_flight_model(  )  io_out     = out ).
+*
+*
+*    "4. Patrón de diseño Observer
+*
+*    DATA(lo_blog) = NEW zcl_lab_69_blog_0631( ).
+*    DATA(lo_administrator) = NEW zcl_lab_71_administrator_0631( ).
+*    DATA(lo_users) = NEW zcl_lab_72_users_0631( ).
+*
+*    SET HANDLER lo_administrator->on_nuevo_articulo FOR lo_blog.
+*    SET HANDLER lo_users->on_nuevo_articulo FOR lo_blog.
+*
+*    lo_blog->articulo_publicado( 'Primer Articulo Abap Cloud' ).
+*    out->write( lo_blog->get_articulo( ) ).
+*    out->write( lo_administrator->mv_notificacion ).
+*    out->write( lo_users->mv_notificacion ).
+*
+*    "3. Patrón de diseño TEMPLATE METHOD
+*
+*    data(go_travel_a) = new zcl_lab_67_package_a_0631( ).
+*    data(go_travel_b) = new zcl_lab_68_package_b_0631( ).
+*
+*      out->write( 'Travel package A' ).
+*      go_travel_a->travel( out ).
+*
+*      out->write( cl_abap_char_utilities=>newline ).
+*
+*      out->write( 'Travel package B' ).
+*      go_travel_b->travel( out ).
+*
+*    "2. Patrón de diseño FACTORY METHOD
+*
+*    DATA: go_file    TYPE REF TO zif_lab_06_file_0631,
+*          go_factory TYPE REF TO zcl_lab_65_factory_0631.
+*
+*    go_factory = NEW #( ).
+*    go_file = go_factory->create_file( 'Expediente A' ).
+*    out->write( go_file->get_file_type( ) ).
+*
+*
+*    "1. Patrón de diseño SINGLETON
+*
+*    DATA lo_context1 TYPE REF TO zcl_lab_62_context_0631.
+*    DATA lo_context2 TYPE REF TO zcl_lab_62_context_0631.
+*
+*    lo_context1 = zcl_lab_62_context_0631=>get_instance( ).
+*
+*    WAIT UP TO 2 SECONDS.
+*
+*    lo_context2 = zcl_lab_62_context_0631=>get_instance( ).
+*
+*    out->write( lo_context1->mv_time ).
+*    out->write( lo_context2->mv_time ).
+*
+*     "Patrones de diseño
+**********************************************************************
+*    "ABAP Unit Test
+*
+*    "6. Test-Injection
+*
+*    DATA lo_cut TYPE REF TO zcl_lab_61_travel_0631.
+*
+*    lo_cut = NEW #( ).
+*
+*    lo_cut->get_travel( IMPORTING es_travel = DATA(ls_travel) ).
+*
+*    out->write( |{ ls_travel-travel_id }-{ ls_travel-currency_code }| ).
+*
+*    "1. Crear clase global de test
+*
+*    DATA(lo_calculator) = NEW zcl_lab_59_calculator_0631( ).
+*
+*    lo_calculator->sum_up( EXPORTING iv_number = 5
+*                           IMPORTING ev_result = DATA(lv_result) ).
+*
+*    out->write( lv_result ) .
+
+
+    "ABAP Unit Test
+**********************************************************************
+*    "Excepciones
+*
+*    "9. Asignación de excepciones unas a otras
+*
+*    DATA: go_data_analyzer TYPE REF TO zcl_lab_58_date_analyzer_0631,
+*          go_no_date       TYPE REF TO zcx_lab_56_no_date_0631,
+*          go_form_unknown  TYPE REF TO zcx_lab_57_form_unknown_0631.
+*
+*    go_data_analyzer = NEW #( ).
+*
+*    TRY.
+*        TRY.
+*            go_data_analyzer->analyze_date( ).
+*
+*          CATCH zcx_lab_56_no_date_0631 INTO go_no_date.
+*            go_data_analyzer->analyze_format( previous = go_no_date ).
+*
+*        ENDTRY.
+*
+*      CATCH zcx_lab_57_form_unknown_0631 INTO go_form_unknown.
+*        out->write( go_form_unknown->get_text( ) ) .
+*
+*    ENDTRY.
+*
+*    "8. Implementación de excepciones reanudables
+*
+*    DATA: go_bank       TYPE REF TO zcl_lab_54_bank_0631,
+*          gcx_exception TYPE REF TO cx_root.
+*
+*    go_bank = NEW #( ).
+*
+*    TRY.
+*        go_bank->transfer( iv_iban = 'US95 4329 8765 4321' ).
+*
+*      CATCH BEFORE UNWIND zcx_lab_55_auth_iban_0631 INTO gcx_exception.
+*
+*        IF gcx_exception->is_resumable EQ abap_true.
+*          RESUME.
+*        ELSE.
+*          out->write( 'Operación NO permitida' ) .
+*        ENDIF.
+*
+*    ENDTRY.
+*
+*    TRY.
+*        go_bank->transfer( iv_iban = 'ES95 4329 8765 4321' ).
+*
+*      CATCH BEFORE UNWIND zcx_lab_55_auth_iban_0631 INTO gcx_exception.
+*
+*        IF gcx_exception->is_resumable EQ abap_true.
+*          RESUME.
+*        ELSE.
+*          out->write( 'Operación permitida' ) .
+*        ENDIF.
+*
+*    ENDTRY.
+*
+*    "7. Estructura de control CLEANUP
+*
+*    DATA: lv_num1   TYPE i VALUE 10,
+*          lv_num2   TYPE i,
+*          lv_result TYPE i.
+*
+*    TRY.
+*        TRY.
+*
+*            lv_result = lv_num1 + lv_num2.
+*            lv_result = lv_num1 / lv_num2.
+*            lv_result = lv_num1 - lv_num2.
+*
+*          CATCH zcx_lab_52_operations_0631 INTO DATA(lx_auth).
+*            out->write( lx_auth->get_text( ) ).
+*
+*          CATCH cx_a4c_bc_exception.
+*
+*          CLEANUP INTO DATA(lx_cleanup).
+*
+*            out->write( |Resultado 1: { lv_result }| ).
+*
+*            out->write( lx_cleanup->get_text( ) ).
+*
+*        ENDTRY.
+*
+*      CATCH cx_sy_zerodivide INTO DATA(lx_zerodivide).
+*        out->write( lx_zerodivide->get_text( ) ).
+*
+*        lv_num2 = 2.
+*        RETRY.
+*
+*    ENDTRY.
+*
+*    out->write( |Resultado: { lv_result }| ).
+*
+*    "5. Estructura de control RETRY
+*
+*    DATA: lv_num1   TYPE i VALUE 10,
+*          lv_num2   TYPE i,
+*          lv_result TYPE i.
+*
+*    TRY.
+*        lv_result = lv_num1 / lv_num2.
+*
+*      CATCH cx_sy_zerodivide INTO DATA(lx_zerodivide).
+*        out->write( lx_zerodivide->get_text( ) ).
+*
+*        lv_num2 = 2.
+*        RETRY.
+*
+*    ENDTRY.
+*
+*    out->write( |Resultado: { lv_result }| ).
+*
+*    "4. Estructura de control TRY-CATCH-ENDTRY
+*
+*    DATA(lo_check_user) = NEW zcl_lab_53_check_user_0631( ).
+*
+*    TRY.
+*        lo_check_user->check_user( sy-uname ).
+*      CATCH zcx_lab_52_operations_0631 INTO DATA(lx_auth).
+*        out->write( lx_auth->get_text( ) ).
+*    ENDTRY.
+*
+*    "Excepciones
+**********************************************************************
 *   "Eventos en orientación a objetos
 *
 *     "8. ALL INSTANCE
@@ -56,7 +272,7 @@ CLASS zcl_lab_01_ejec_0631 IMPLEMENTATION.
 *
 *    DATA(lo_operanding_syst) = NEW zcl_lab_44_operating_syst_0631( ).
 *    DATA(lo_chrome) = NEW zcl_lab_45_chrome_0631( ).
-
+*
 *
 *    SET HANDLER lo_chrome->on_close_window FOR lo_operanding_syst ACTIVATION abap_false.
 *
@@ -223,7 +439,7 @@ CLASS zcl_lab_01_ejec_0631 IMPLEMENTATION.
 *    "Interfaces y Clases Abstractas
 *
 **********************************************************************
-
+*
 *    "Herencia, Casting y Clase Amiga
 *
 *    "10. Herencia con clase amiga
@@ -310,8 +526,8 @@ CLASS zcl_lab_01_ejec_0631 IMPLEMENTATION.
 *    "Herencia, Casting y Clase Amiga
 *
 **********************************************************************
-
-
+*
+*
 *    "laboratorio instancias
 *
 *    DATA(lo_log) = NEW zcl_lab_10_constructor_0631( ).
